@@ -21,7 +21,6 @@ environment:
 
 architectures:
   - build-on: [amd64]
-  - build-on: [arm64]
 
 apps:
   seafile-gui:
