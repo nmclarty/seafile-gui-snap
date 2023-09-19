@@ -1,0 +1,111 @@
+name: seafile-gui
+summary: Seafile Desktop Client
+description: |
+      Seafile is a file syncing and sharing software with file encryption
+      and group sharing, emphasis on reliability and high performance.
+      .
+      Seafile is an open source cloud storage system with privacy protection
+      and teamwork features. Collections of files are called libraries. Each
+      library can be synced separately. A library can also be encrypted with
+      a user chosen password. Seafile also allows users to create groups and
+      easily sharing files into groups.
+      .
+      This package contains the graphical Desktop Client for Seafile.
+version: 9.0.4
+grade: stable
+confinement: strict
+base: core22
+environment:
+  HOME: $SNAP_REAL_HOME
+  CCNET_CONF_DIR: $SNAP_USER_COMMON/ccnet
+apps:
+  seafile-gui:
+    command: usr/bin/seafile-applet
+    plugs:
+      - home
+      - network
+      - unity7
+    extensions:
+      - kde-neon
+parts:
+  libsearpc:
+    plugin: autotools
+    source-type: git
+    source: https://github.com/haiwen/libsearpc.git
+    source-branch: v3.2-latest
+    autotools-configure-parameters:
+      - --prefix=/usr
+    build-packages:
+      - libglib2.0-dev
+      - libjansson-dev
+  libwebsockets:
+    plugin: cmake
+    source-type: git
+    source: https://github.com/warmcat/libwebsockets.git
+    source-branch: v4.3.0
+    cmake-parameters:
+      - -DCMAKE_INSTALL_PREFIX=/usr
+  seafile:
+    plugin: autotools
+    source-type: git
+    source: https://github.com/haiwen/seafile.git
+    source-branch: v9.0.4
+    autotools-configure-parameters:
+      - --prefix=/usr
+    after:
+      - libsearpc
+      - libwebsockets
+    build-packages:
+      - autoconf
+      - automake
+      - libtool
+      - libevent-dev
+      - libcurl4-openssl-dev
+      - libgtk2.0-dev
+      - uuid-dev
+      - intltool
+      - libsqlite3-dev
+      - valac
+      - libjansson-dev
+      - cmake
+      - qtchooser
+      - qtbase5-dev
+      - libqt5webkit5-dev
+      - qttools5-dev
+      - qttools5-dev-tools
+      - libssl-dev
+  seafile-client:
+    plugin: cmake
+    source-type: git
+    source: https://github.com/haiwen/seafile-client.git
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr
+    source-branch: v9.0.4
+    after:
+      - seafile
+      - libsearpc
+      - libwebsockets
+    build-packages:
+      - autoconf
+      - automake
+      - libtool
+      - libevent-dev
+      - libcurl4-openssl-dev
+      - libgtk2.0-dev
+      - uuid-dev
+      - intltool
+      - libsqlite3-dev
+      - valac
+      - libjansson-dev
+      - cmake
+      - qtchooser
+      - qtbase5-dev
+      - libqt5webkit5-dev
+      - qttools5-dev
+      - qttools5-dev-tools
+      - libssl-dev
+    stage-packages:
+      - libjansson-dev
+      - libcurl4-openssl-dev
+      - libevent-dev
