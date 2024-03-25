@@ -16,7 +16,6 @@ grade: stable
 confinement: strict
 base: core22
 environment:
-  HOME: $SNAP_REAL_HOME
   CCNET_CONF_DIR: $SNAP_USER_COMMON/ccnet
 
 architectures:
