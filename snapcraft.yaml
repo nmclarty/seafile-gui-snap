@@ -1,0 +1,83 @@
+name: seafile-gui
+version: 9.0.8
+summary: Seafile Desktop Client
+description: |
+      Seafile is a file syncing and sharing software with file encryption
+      and group sharing, emphasis on reliability and high performance.
+      .
+      Seafile is an open source cloud storage system with privacy protection
+      and teamwork features. Collections of files are called libraries. Each
+      library can be synced separately. A library can also be encrypted with
+      a user chosen password. Seafile also allows users to create groups and
+      easily sharing files into groups.
+      .
+      This package contains the graphical Desktop Client for Seafile.
+
+grade: stable
+confinement: strict
+base: core22
+
+environment:
+  HOME: $SNAP_REAL_HOME
+  CCNET_CONF_DIR: $SNAP_USER_COMMON/ccnet
+
+architectures:
+  - build-on: [amd64]
+  - build-on: [arm64]
+
+apps:
+  seafile-gui:
+    command: usr/bin/seafile-applet
+    plugs:
+      - home
+      - network
+      - unity7
+    extensions:
+      - kde-neon
+
+parts:
+  libsearpc:
+    plugin: autotools
+    source-type: git
+    source: https://github.com/haiwen/libsearpc.git
+    source-branch: v3.2-latest
+    autotools-configure-parameters:
+      - --prefix=/usr
+    build-packages:
+      - libglib2.0-dev
+      - libjansson-dev
+
+  seafile:
+    plugin: autotools
+    source-type: git
+    source: https://github.com/haiwen/seafile.git
+    source-branch: v9.0.8
+    autotools-configure-parameters:
+      - --prefix=/usr
+    after:
+      - libsearpc
+    build-packages:
+      - valac
+      - libsqlite3-dev
+      - libevent-dev
+      - libcurl4-openssl-dev
+      - libwebsockets-dev
+      
+  seafile-client:
+    plugin: cmake
+    source-type: git
+    source: https://github.com/haiwen/seafile-client.git
+    source-branch: v9.0.8
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr
+    after:
+      - seafile
+      - libsearpc
+    build-packages:
+      - libgles-dev
+    stage-packages:
+      - libcurl4
+      - libjansson4
+      - libwebsockets16
+      - libevent-pthreads-2.1-7
