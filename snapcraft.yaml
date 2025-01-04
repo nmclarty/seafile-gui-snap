@@ -1,5 +1,5 @@
 name: seafile-gui
-version: 9.0.8
+version: 9.0.11
 summary: Seafile Desktop Client
 description: |
       Seafile is a file syncing and sharing software with file encryption
@@ -51,7 +51,7 @@ parts:
     plugin: autotools
     source-type: git
     source: https://github.com/haiwen/seafile.git
-    source-branch: v9.0.8
+    source-branch: v9.0.11
     autotools-configure-parameters:
       - --prefix=/usr
     after:
@@ -67,7 +67,7 @@ parts:
     plugin: cmake
     source-type: git
     source: https://github.com/haiwen/seafile-client.git
-    source-branch: v9.0.8
+    source-branch: v9.0.11
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
       - -DCMAKE_INSTALL_PREFIX=/usr
