@@ -62,6 +62,7 @@ parts:
       - libevent-dev
       - libcurl4-openssl-dev
       - libwebsockets-dev
+      - libargon2-dev
       
   seafile-client:
     plugin: cmake
